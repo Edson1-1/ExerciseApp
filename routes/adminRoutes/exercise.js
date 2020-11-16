@@ -2,7 +2,7 @@
 
 const baseAddress = '/admin/api/exercise'
 module.exports = [
-    {
+    {   //add new exercise
         method: 'POST',
         path: baseAddress+'/add',
         handler: (request, h) => {
@@ -11,18 +11,22 @@ module.exports = [
                 type: request.payload.type,
                 equipment: request.payload.equipment
             }
+            //add to DB
             console.log(exercise)
-            return exercise
+            return {message : "added to db succesfully"}
+        },
+        options:{
+            auth: 'session'
         }
     },
-    {
+    {   //get all exercise
         method: 'GET',
         path: baseAddress+'/',
         handler: (request, h) => {
             return "GET all exercises works"
-        }   
+        },  
     },
-    {
+    {   //get exercise according to id
         method: 'GET',
         path: baseAddress+'/{id}',
         handler: (request, h) => {
@@ -30,7 +34,7 @@ module.exports = [
             return `GET exercise ${id} works`
         } 
     },
-    {
+    {   //update exercise
         method: 'PUT',
         path: baseAddress+'/update/{id}',
         handler: (request, h) => {
@@ -38,7 +42,7 @@ module.exports = [
             return `update exercise ${id} works`
         }
     },
-    {
+    {   //delete exercise
         method: 'DELETE',
         path: baseAddress+'/delete/{id}',
         handler: (request, h) => {
