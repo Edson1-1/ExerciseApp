@@ -1,21 +1,19 @@
 
-const users = [{
-    id: 1,
-    name: 'Jon Doe',
-    hashedPassword:"$2b$10$JaHWv.NSN8ctdYWaJdAxHuPkmjklO6g3zfT7J4AdTi.sRRg9dArUK",
-    email: 'ssss@email.com',
-    role_id: 1
-    }]
+const User = require('../models/User');
 
+//customer login
 module.exports = async (request, session) => {
-    const account = await users.find(
-        (user) => (user.id === session.id)
-    );
+    console.log(session.id)
+    const account = await User.findByPk(session.id)
 
     if (!account) {
+        console.log("auth false")
+        console.log("----------")
 
         return { valid: false };
     }
+    console.log("auth true")
+    console.log("----------")
 
     return { valid: true, credentials: account };
 }
