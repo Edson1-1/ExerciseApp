@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
-const User = require('../models/User');
-const Roles = require('../models/Roles');
+const models = require('../models')
+
+
+
 
 module.exports = {
     //signUp
@@ -14,12 +16,14 @@ module.exports = {
             role_id: request.payload.role_id,
         }
         try{
-            const registeredUser = await User.create({username: user.name, email: user.email, hashedPassword: user.hashedPassword,
+            console.log(models.User)
+            const registeredUser = await models.User.create({username: user.name, email: user.email, hashedPassword: user.hashedPassword,
             role_id : user.role_id})
             return registeredUser
         }catch(err){
-            console.log(err)
-            return "something went wrong"
+            console.log('singUp error')
+            console.log(err.toString())
+            return err.toString()
         }
 },
     //signIn
@@ -46,8 +50,8 @@ module.exports = {
             if(role_id !== 1){
                 return "Not a valid user"
             }
-            const users = await User.findAll({include : Roles})
-            return users
+            const users = await User.findAll({include: {model: Roles}})
+            return {users}
         }catch(err){
             console.log(err.toString())
             return "something went wrong"

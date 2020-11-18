@@ -8,6 +8,7 @@ module.exports = [
         method: 'POST',
         path: baseAddress+'/add',
         handler: async (request, h) => {
+            
             const equipment =  request.payload.name
             try{
                 const addedEquipment = await Equipment.create({Equipment_name : equipment})
@@ -21,7 +22,8 @@ module.exports = [
         method: 'GET',
         path: baseAddress+'/',
         handler: async(request, h) => {
-            
+            const credentials = request.auth.credentials.role_id
+            console.log(credentials)
             try {
                 const equipments = Equipment.findAll()
                 return equipments

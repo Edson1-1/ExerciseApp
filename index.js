@@ -1,6 +1,7 @@
 'use strict'
 const Hapi = require('@hapi/hapi')
-const db = require('./db_config/database')
+const models = require('./models')
+
 const hapiCookie = require('@hapi/cookie')
 const validate = require('./authentication/auth')
 require('dotenv').config()
@@ -14,11 +15,13 @@ const server = new Hapi.Server({
 
 
 //starting database
-db.authenticate()
-    .then( (result) => {
+models.sequelize.authenticate()
+    .then( () => {
+        console.log()
         console.log(`Connected to database ${process.env.DB_NAME}`)
     })
     .catch(err => console.log("Error occured: " + err))
+    
 //starting server
 async function start(){
     try{
@@ -36,6 +39,7 @@ async function start(){
         server.route(require("./routes/index.js"))
         await server.start()
         console.log("server started at port 8000")
+        console.log()
     }catch(err){
         console.log(err)
         process.exit(1)
