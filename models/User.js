@@ -1,20 +1,27 @@
 'use strict'
+
 const Sequelize = require('sequelize')
 
-module.exports = function(sequelize, DataTypes){
+module.exports = function(sequelize){
 	const User = sequelize.define( 'User',{
     username: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
     },
     email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
     },
     hashedPassword: {
         type: Sequelize.STRING
     },
     trainer_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+            model: "users",
+            key: "id",
     },
+},
     role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,7 +29,7 @@ module.exports = function(sequelize, DataTypes){
             model: "roles",
             key: "id",
         },
-        }
+    }
 }, 
 {
     underscored: true,
@@ -31,13 +38,23 @@ module.exports = function(sequelize, DataTypes){
 )
 
 User.associate = function (models) {
-	User.belongsTo(models.Roles, {
+	User.belongsTo(models.Role, {
 		as: 'roles',
 		foreignKey: {
 			name: 'role_id',
 			allowNull: false,
 		},
-	});
+    })
+
+    User.belongsTo(models.User, {
+        onDelete: 'CASCADE',
+        as: 'trainers',
+        foreignKey: {
+            name: 'trainer_id'
+        },
+    } )
+    
+    User.belongsToMany(models.Exercise, {through: 'UserExercise'});
 }
 
 
