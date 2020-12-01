@@ -1,14 +1,31 @@
+'use strict'
+
 const Sequelize = require('sequelize')
-const db = require('../db_config/database')
 
-const Equipment = db.define("Equipment", {
-    Equipment_name : {
-        type: Sequelize.STRING,
-    }
-},
+module.exports = (sequelize) => {
+
+    const Equipment = sequelize.define("Equipment", {
+        equipment_name : {
+            type: Sequelize.STRING,
+            unique: true
+        }
+    },
     {
-        freezeTableName: true,
+        underscored: true,
+        tableName: 'equipments'
     }
-)
+    )
 
-module.exports = Equipment
+    Equipment.associate = (models) => {
+        Equipment.hasMany(models.Exercise, {
+            as: 'equipments',
+            foreignKey: {
+                name: "equipment_id",
+                allowNull: false,
+            }
+        });
+    }
+    
+return Equipment
+
+}

@@ -1,0 +1,81 @@
+diff --git a/controllers/userController.js b/controllers/userController.js
+index 7f4b36a..bd8e061 100644
+--- a/controllers/userController.js
++++ b/controllers/userController.js
+@@ -2,8 +2,6 @@ const bcrypt = require('bcrypt')
+ const models = require('../models')
+ 
+ 
+-
+-
+ module.exports = {
+     //signUp
+     userRegister: async(request, h) => {
+@@ -16,7 +14,6 @@ module.exports = {
+             role_id: request.payload.role_id,
+         }
+         try{
+-            console.log(models.User)
+             const registeredUser = await models.User.create({username: user.name, email: user.email, hashedPassword: user.hashedPassword,
+             role_id : user.role_id})
+             return registeredUser
+diff --git a/models/Index.js b/models/Index.js
+index 752d0ff..7694a57 100644
+--- a/models/Index.js
++++ b/models/Index.js
+@@ -1,22 +1,19 @@
+ 
+ const Sequelize = require('sequelize')
+ require('dotenv').config()
+-const User = require('./User')
+-const Role = require('./Role')
+-
+-const models ={}
+-
+ 
+ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_OWNER, process.env.DB_PASSWORD, {
+-    host: "localhost",
++	host: "localhost",
+ 	dialect: "postgres",
+-})
+-
+-
+-models.User = User
++});
+ 
+-models.Role = Role
++const User = sequelize.import('./User')
++const Role = sequelize.import('./Role')
+ 
++const models = {
++	User,
++	Role
++}
+ 
+ Object.keys(models).forEach((modelName) => {
+ 	// console.log("test" + modelName);
+diff --git a/models/User.js b/models/User.js
+index 21fff96..48288ec 100644
+--- a/models/User.js
++++ b/models/User.js
+@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes){
+ )
+ 
+ User.associate = function (models) {
+-	User.belongsTo(models.Roles, {
++	User.belongsTo(models.Role, {
+ 		as: 'roles',
+ 		foreignKey: {
+ 			name: 'role_id',
+diff --git a/package.json b/package.json
+index 9fcd87b..518574b 100644
+--- a/package.json
++++ b/package.json
+@@ -18,6 +18,6 @@
+     "nodemon": "^2.0.6",
+     "pg": "^8.5.0",
+     "pg-hstore": "^2.3.3",
+-    "sequelize": "^6.3.5"
++    "sequelize": "^5.21.3"
+   }
+ }
