@@ -1,12 +1,13 @@
 
-// const {User} = require('../models/Index');
-const User = require('../models/User');
+
+const models = require('../models');
 
 
-//customer login
+// auth login
 module.exports = async (request, session) => {
     console.log("auth session id", session.id)
-    const account = await User.findByPk(session.id)
+    console.log("----------")
+    const account = await models.User.findByPk(session.id)
 
 
     if (!account) {
