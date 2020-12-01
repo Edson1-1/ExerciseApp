@@ -1,16 +1,21 @@
 'use strict'
 const Hapi = require('@hapi/hapi')
+const Jwt = require('@hapi/jwt')
 const models = require('./models')
 
 const hapiCookie = require('@hapi/cookie')
 const validate = require('./authentication/auth')
+const JWTvalidate = require('./authentication/JWTvalidate')
 require('dotenv').config()
 
 
 //initializing server
 const server = new Hapi.Server({
-    host: 'localhost',
-    port: process.env.PORT | 8000
+    'host': 'localhost',
+    'port': process.env.PORT | 8000,
+    'routes':{
+        'cors': true
+    }
 })
 
 
@@ -26,22 +31,36 @@ models.sequelize.authenticate()
 async function start(){
     try{
         await server.register(hapiCookie)
+        await server.register(Jwt);
+        server.auth.strategy('my_jwt_stategy', 'jwt', {
+            keys: process.env.JWTSECRET,
+            verify: {
+                aud: false,
+                iss: false,
+                sub: false,
+                nbf: true,
+                exp: true,
+                maxAgeSec:0,
+                timeSkewSec: 0
+            },
+            validate: JWTvalidate
+        });
         server.auth.strategy('session', 'cookie', {
             cookie: {
                 name: 'session',
                 password: process.env.COOKIE_PASSWORD,
-                isSecure: false
+                isSecure: false,
             },
             redirectTo: '/login',
             validateFunc: validate
         })
-        server.auth.default('session')
+        server.auth.default('my_jwt_stategy')
         server.route(require("./routes/index.js"))
         await server.start()
         console.log("server started at port 8000")
         console.log()
     }catch(err){
-        console.log(err)
+        console.log(err.toString())
         process.exit(1)
     }
 }
