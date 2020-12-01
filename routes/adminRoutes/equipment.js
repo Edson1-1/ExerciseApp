@@ -1,5 +1,7 @@
 //CRUD Equipment admin API - should contain /admin/api in the path
-const Equipment = require('../../models/Equipment')
+
+const Joi = require('@hapi/joi')
+const equipmentController = require('../../controllers/equipmentController')
 
 
 const baseAddress = '/admin/api/equipment'
@@ -7,55 +9,40 @@ module.exports = [
     {   //add new equipment
         method: 'POST',
         path: baseAddress+'/add',
-        handler: async (request, h) => {
-            
-            const equipment =  request.payload.name
-            try{
-                const addedEquipment = await Equipment.create({Equipment_name : equipment})
-                return addedEquipment
-            }catch(err){
-            console.log("cannot add to DB")
-            return "Cannot add to db"
-}        }
+        handler: equipmentController.addEquipment,
+        options: {
+            validate:{
+                payload: Joi.object({
+                    name: Joi.string().required()
+                })
+            }
+        }
     },
     {   //get all equipment
         method: 'GET',
         path: baseAddress+'/',
-        handler: async(request, h) => {
-            const credentials = request.auth.credentials.role_id
-            console.log(credentials)
-            try {
-                const equipments = Equipment.findAll()
-                return equipments
-            }catch(err){
-                console.log("error occured while retrieving data. could not retrieve data")
-                return "Cannot retrieve data"
-            }
-            
-        }   
+        handler: equipmentController.getAllEquipment,
     },
     {   //get equipment according to id
         method: 'GET',
         path: baseAddress+'/{id}',
-        handler: (request, h) => {
-            const id = request.params.id
-            return `GET equipment ${id} works`
-        } 
+        handler: equipmentController.getEquipmentById, 
     },
     {   //update equipment
         method: 'PUT',
         path: baseAddress+'/update/{id}',
-        handler: (request, h) => {
-            const id = request.params.id
-            return `update equipment ${id} works`
+        handler: equipmentController.updateEquipmentById,
+        options: {
+            validate:{
+                payload: Joi.object({
+                    name: Joi.string().required()
+                })
+            }
         }
     },
     {   //delete equipment
         method: 'DELETE',
         path: baseAddress+'/delete/{id}',
-        handler: (request, h) => {
-            const id = request.params.id
-            return `delete equipment ${id} works`
-        }
+        handler: equipmentController.deleteById,
     }
 ]
