@@ -9,14 +9,13 @@ module.exports = (sequelize) => {
             type: Sequelize.DATE,
             defaultValue: new Date(),
         },
-        start_time:{
-            type: Sequelize.DATE,
-            defaultValue: new Date()
+        duration:{
+            type: Sequelize.INTEGER,
         },
-        end_time:{
-            type: Sequelize.DATE,
-            defaultValue: new Date()
-        }
+        // end_time:{
+        //     type: Sequelize.DATE,
+        //     defaultValue: new Date()
+        // }
     },
     {
         underscored : true,
