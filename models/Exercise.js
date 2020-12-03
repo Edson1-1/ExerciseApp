@@ -51,6 +51,14 @@ module.exports = (sequelize) => {
 
     Exercise.belongsToMany(models.User, {through: 'UserExercise'});
 
+    Exercise.hasMany(models.UserExercise, {
+        as: 'exercises',
+        foreignKey: {
+            name: 'exercise_id',
+            allowNull: false
+        }
+    })
+
     }
 
 return Exercise
