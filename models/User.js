@@ -55,6 +55,11 @@ User.associate = function (models) {
     } )
     
     User.belongsToMany(models.Exercise, {through: 'UserExercise'});
+
+    User.hasMany(models.UserExercise, {
+        as: 'users',
+        foreignKey: {name: 'user_id'},
+    })
 }
 
 
