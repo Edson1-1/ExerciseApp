@@ -31,7 +31,7 @@ module.exports = {
                 return equipments
             }catch(err){
                 console.log(err.toString())
-                return {message: err.toString()}
+                return h.response(err.toString()).code(400)
             }   
         }else{
             return h.response("You are not autherized to do this").code(401)
