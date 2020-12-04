@@ -54,9 +54,12 @@ async function start(){
             redirectTo: '/login',
             validateFunc: validate
         })
-        server.auth.default('my_jwt_stategy')
-        server.route(require("./routes/index.js"))
-        await server.start()
+
+        server.auth.default('my_jwt_stategy') //JWT auth strategy
+
+        server.route(require("./routes/index.js")) //routing file
+
+        await server.start() // starting server
         console.log("server started at port 8000")
         console.log()
     }catch(err){
@@ -66,5 +69,5 @@ async function start(){
 }
 
 
-start()
+start() // start server
 
