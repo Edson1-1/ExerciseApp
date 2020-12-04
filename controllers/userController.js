@@ -10,7 +10,7 @@ module.exports = {
         const password = request.payload.password
         const hashedPassword = bcrypt.hashSync(password, parseInt(process.env.SALT));
         const user = {
-            username: request.payload.name,
+            username: request.payload.name.toLowerCase(),
             hashedPassword: hashedPassword,
             email: request.payload.email,
             role_id: request.payload.role_id,
@@ -38,7 +38,7 @@ module.exports = {
     userLogin: async (request, h) => {
 
         const user = {
-            name: request.payload.name,
+            name: request.payload.name.toLowerCase(),
             password: request.payload.password,
             role_id: request.payload.role_id
         }
@@ -89,7 +89,7 @@ module.exports = {
             if (!isAdmin) {
                 return h.response("Not an Admin. Only Admin can view all Users").code(400)
             }
-            const users = await models.User.findAll({ include: [{ model: models.Role, as: 'roles', required: true, where: { title: 'customer' } }, { model: models.User, as: 'trainers' }] })
+            const users = await models.User.findAll({attributes: { exclude: ['hashedPassword']}, include: [{ model: models.Role, as: 'roles', required: true, where: { title: 'customer' } }, { model: models.User, as: 'trainers', attributes: { exclude: ['hashedPassword']} }] })
             console.log(users)
             return users
         } catch (err) {
@@ -129,7 +129,7 @@ module.exports = {
         try {
             const trainer_role = await models.Role.findOne({ where: { title: 'trainer' } })
 
-            const trainers = await models.User.findAll({ where: { role_id: trainer_role.id }, include: { model: models.Role, as: 'roles' } })
+            const trainers = await models.User.findAll({ where: { role_id: trainer_role.id },attributes: { exclude: ['hashedPassword']}, include: { model: models.Role, as: 'roles' } })
             return trainers
         } catch (err) {
             console.log(err.toString())

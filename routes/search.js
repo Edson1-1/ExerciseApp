@@ -6,10 +6,10 @@ const searchController = require("../controllers/searchController")
 const baseAddress = '/search/api'
 module.exports = [ 
     {
-        //search Users by trainer name
+        //search Customers(Users) *
         method: 'POST',
-        path: baseAddress+'/getuserbytrainer',
-        handler: searchController.getUserByTrainerName,
+        path: baseAddress+'/searchcustomer',
+        handler: searchController.adminSearchCustomer,
 
     },
     {
@@ -20,7 +20,7 @@ module.exports = [
 
     },
     {
-        //search Exercise by name/type
+        //search Exercise by name/type *
         method: 'POST',
         path: baseAddress+'/getexercise',
         handler: searchController.getExercise,
@@ -29,6 +29,7 @@ module.exports = [
     {
         //search User's exercises by given date
         //not working
+        //done below in searching customers
         method: 'POST',
         path: baseAddress+'/getuserexercisebydate',
         handler: searchController.getUserExerciseByDate,
@@ -36,6 +37,7 @@ module.exports = [
     },
     {
         //search User's exercises by given user name/email/id
+        //done below in searching customers
         method: 'POST',
         path: baseAddress+'/getuserexercise',
         handler: searchController.getUserExercise,
@@ -47,5 +49,11 @@ module.exports = [
         path: baseAddress+'/getexerciseuser',
         handler: searchController.getExerciseUser,
 
+    },
+    {   //searching customers
+        //search customer's exercises by exercise_name, duration, date *
+        method: 'POST',
+        path: baseAddress+'/customersexercise',
+        handler: searchController.searchCustomerExercise
     }
 ]

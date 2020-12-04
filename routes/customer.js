@@ -16,7 +16,7 @@ module.exports = [
     {
         //delete logged exercise for User
         method : 'DELETE',
-        path: baseAddress+'/delete_logged_exercise/{id}',
+        path: baseAddress+'/delete_logged_exercise',
         handler: customerController.deleteLogExercise
     },
     {

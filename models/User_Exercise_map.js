@@ -6,16 +6,12 @@ const Sequelize = require('sequelize')
 module.exports = (sequelize) => {
     const UserExercise = sequelize.define('UserExercise', {
         date: {
-            type: Sequelize.DATE,
+            type: Sequelize.STRING,
             defaultValue: new Date(),
         },
         duration:{
             type: Sequelize.INTEGER,
         },
-        // end_time:{
-        //     type: Sequelize.DATE,
-        //     defaultValue: new Date()
-        // }
     },
     {
         underscored : true,
