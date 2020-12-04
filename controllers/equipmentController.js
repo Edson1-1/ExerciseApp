@@ -48,14 +48,14 @@ module.exports = {
                 if (equipment) {
                     return equipment
                 }else {
-                    return {message : "equipment does not exist"}
+                    return h.response("equipment does not exist").code(400)
                 }
             }catch(err){
                 console.log(err.toString())
-                return {message : err.toString}
+                return h.response(err.toString()).code(400)
             }
         }else{
-            return {message: "You are not autherized to do this"}
+            return h.response("You are not autherized to do this").code(400)
         }
     },
     updateEquipmentById: async(request, h)=>{
@@ -76,16 +76,16 @@ module.exports = {
                     return updatedEquipment
                 }else {
 
-                    return {message : "equipment does not exist"}
+                    return h.response("equipment does not exist").code(400)
                 }
             }catch(err){
                 console.log(err.toString())
 
-                return {message : err.toString}
+                return h.response(err.toString()).code(400)
             }
         }else{
 
-            return {message: "You are not autherized to do this"}
+            return h.response("You are not autherized to do this").code(401)
         }
     },
     deleteById: async(request, h) => {
@@ -107,7 +107,7 @@ module.exports = {
             }
         }else{
 
-            return {message: "You are not autherized to do this"}
+            return h.response("You are not autherized to do this").code(401)
         }
 
     }   

@@ -8,7 +8,7 @@ module.exports = {
             return roles
         }catch(err){
             console.log(err.toString())
-            return {message: err.toString()}
+            return h.response(err.toString()).code(400)
         }
     }
 }

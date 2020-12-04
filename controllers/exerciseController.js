@@ -53,7 +53,7 @@ module.exports = {
         }catch(err){
             console.log("error with retrieveing exercies")
             console.log(err.toString())
-            return {message: err.toString()}
+            return h.response(err.toString()).code(400)
             }
         },
         getExerciseById: async(request, h) => {
@@ -69,7 +69,7 @@ module.exports = {
             }catch(err){
                 console.log("error while getting a single exercise")
                 console.log(err.toString())
-                return {message: err.toString()}
+                return h.response(err.toString()).code(400)
             }
         },
         updateExerciseById: async(request, h) => {
@@ -83,7 +83,7 @@ module.exports = {
             console.log("role_id", role_id)
             const isAdmin =  await roleauth.isAdmin(role_id)
             if(!isAdmin){
-                return {message: "You are not autherized to do this"}
+                return h.response("You are not autherized to do this").code(401)
             }
             //setting the exercise_type
             try{
@@ -97,7 +97,7 @@ module.exports = {
                 }
             }catch(err){
                 console.log("Error while updateing exercise_type: "+err.toString())
-                return {message: "Error while updateing exercise_type: "+err.toString()}
+                return h.response("Error while updateing exercise_type: "+err.toString()).code(400)
             }
 
             try{
@@ -112,7 +112,7 @@ module.exports = {
             }catch(err){
                 console.log("error in updating exercise")
                 console.log(err.toString())
-                return {message: err.toString()}        
+                return h.response(err.toString()).code(400)      
             }
         },
         deleteById: async(request, h) => {
