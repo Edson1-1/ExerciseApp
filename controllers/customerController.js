@@ -41,9 +41,11 @@ module.exports = {
     deleteLogExercise: async(request, h) => {
         const user_id = request.auth.credentials.id
         const exercise_id = request.query.exercise_id
+        const date = request.query.date
+        const duration = request.query.duration
         const created_at = request.query.created_at
         try{
-            const deletedExercise = await models.UserExercise.destroy({where: {user_id, exercise_id, createdAt: created_at}})
+            const deletedExercise = await models.UserExercise.destroy({where: {user_id, exercise_id, date, duration, createdAt: created_at}})
             console.log(JSON.parse(deletedExercise))
             return deletedExercise
         }catch(err){
