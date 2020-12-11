@@ -5,6 +5,7 @@ require('dotenv').config()
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_OWNER, process.env.DB_PASSWORD, {
 	host: "localhost",
 	dialect: "postgres",
+	logging: false
 });
 
 const User = sequelize.import('./User')
@@ -13,6 +14,7 @@ const Exercise = sequelize.import('./Exercise')
 const Equipment = sequelize.import('./Equipment')
 const Exercise_Type = sequelize.import('./Exercise_Type')
 const UserExercise = sequelize.import('./User_Exercise_map')
+const SampleUser = sequelize.import('./SampleUser')
 
 
 const models = {
@@ -22,6 +24,7 @@ const models = {
 	Equipment,
 	Exercise_Type,
 	UserExercise,
+	SampleUser
 }
 
 Object.keys(models).forEach((modelName) => {

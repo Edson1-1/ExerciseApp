@@ -22,7 +22,6 @@ const server = new Hapi.Server({
 //starting database
 models.sequelize.authenticate()
     .then( () => {
-        console.log()
         console.log(`Connected to database ${process.env.DB_NAME}`)
     })
     .catch(err => console.log("Error occured: " + err))
@@ -61,7 +60,6 @@ async function start(){
 
         await server.start() // starting server
         console.log("server started at port 8000")
-        console.log()
     }catch(err){
         console.log(err.toString())
         process.exit(1)
